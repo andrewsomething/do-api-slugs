@@ -1,6 +1,9 @@
 # DigitalOcean API Slugs
 
+[https://slugs.do-api.dev/](https://slugs.do-api.dev/)
+
 ![Screenhot](https://i.imgur.com/etNCvLU.png)
+
 
 ## Project Details
 
@@ -16,7 +19,7 @@ npm install
 npm run serve
 ```
 
-### Build for production
+#### Build for production
 ```
 npm run build
 ```
