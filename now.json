@@ -18,6 +18,7 @@
     {"src": "^/favicon.ico", "dest": "/favicon.ico"},
     {"src": ".*", "dest": "/index.html"}
   ],
+  "alias": ["slugs.do-api.dev"],
   "env": {
     "DO_TOKEN": "@do_token"
   }
