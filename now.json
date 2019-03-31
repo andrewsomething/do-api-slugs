@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "name": "do-api-slugs",
+  "builds": [
+    {"src": "package.json", "use": "@now/static-build"},
+    { "src": "functions/sizes/main.go", "use": "@now/go" },
+    { "src": "functions/k8s/main.go", "use": "@now/go" },
+    { "src": "functions/images/main.go", "use": "@now/go" }
+  ],
+  "routes": [
+    {"src": "^/js/(.*)", "dest": "/js/$1"},
+    {"src": "^/css/(.*)", "dest": "/css/$1"},
+    {"src": "^/img/(.*)", "dest": "/img/$1"},
+    {"src": "^/api/sizes", "dest": "functions/sizes/main.go"},
+    {"src": "^/api/k8s", "dest": "functions/k8s/main.go"},
+    {"src": "^/api/images/distros", "dest": "functions/images/main.go"},
+    {"src": "^/api/images/apps", "dest": "functions/images/main.go"},
+    {"src": ".*", "dest": "/index.html"}
+  ],
+  "env": {
+    "DO_TOKEN": "@do_token"
+  }
+}
