@@ -19,6 +19,10 @@
     {"src": ".*", "dest": "/index.html"}
   ],
   "alias": ["slugs.do-api.dev"],
+  "github": {
+    "enabled": true,
+    "autoAlias": true
+  },
   "env": {
     "DO_TOKEN": "@do_token"
   }
