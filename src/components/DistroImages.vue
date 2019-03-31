@@ -9,7 +9,7 @@
       </b-table-column>
 
       <b-table-column field="slug" label="Slug" sortable>
-          {{ props.row.slug }}
+        <code>{{ props.row.slug }}</code>
       </b-table-column>
 
       <b-table-column field="distribution" label="Distro" sortable>

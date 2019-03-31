@@ -5,7 +5,7 @@
            default-sort="kubernetes_version">
     <template slot-scope="props">
       <b-table-column field="slug" label="Slug" sortable>
-          {{ props.row.slug }}
+        <code>{{ props.row.slug }}</code>
       </b-table-column>
 
       <b-table-column field="kubernetes_version" label="Version" sortable>
