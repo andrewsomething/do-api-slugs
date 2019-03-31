@@ -18,7 +18,7 @@
     {"src": "^/favicon.ico", "dest": "/favicon.ico"},
     {"src": ".*", "dest": "/index.html"}
   ],
-  "alias": ["slugs.do-api.dev"],
+  "alias": ["slugs.do-api.dev", "do-api-slugs.andrewsomething.now.sh"],
   "github": {
     "enabled": true,
     "autoAlias": true
