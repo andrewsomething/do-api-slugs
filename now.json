@@ -15,6 +15,7 @@
     {"src": "^/api/k8s", "dest": "functions/k8s/main.go"},
     {"src": "^/api/images/distros", "dest": "functions/images/main.go"},
     {"src": "^/api/images/apps", "dest": "functions/images/main.go"},
+    {"src": "^/favicon.ico", "dest": "/favicon.ico"},
     {"src": ".*", "dest": "/index.html"}
   ],
   "env": {
