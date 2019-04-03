@@ -49,17 +49,17 @@ export default {
   name: 'hero',
   data () {
     return {
-      doctl: 'doctl compute sizes list'
+      doctl: 'doctl compute size list'
     }
   },
   mounted () {
     this.$root.$on('tab', data => {
       if (data === 'sizes') {
-        this.doctl = 'doctl compute sizes list'
+        this.doctl = 'doctl compute size list'
       } else if (data === 'distro-images') {
-        this.doctl = 'doctl compute images list-distribution'
+        this.doctl = 'doctl compute image list-distribution'
       } else if (data === 'app-images') {
-        this.doctl = 'doctl compute images list-application'
+        this.doctl = 'doctl compute imageslist-application'
       } else if (data === 'k8s') {
         this.doctl = 'doctl k8s options versions'
       }
