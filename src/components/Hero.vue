@@ -59,7 +59,7 @@ export default {
       } else if (data === 'distro-images') {
         this.doctl = 'doctl compute image list-distribution'
       } else if (data === 'app-images') {
-        this.doctl = 'doctl compute imageslist-application'
+        this.doctl = 'doctl compute image list-application'
       } else if (data === 'k8s') {
         this.doctl = 'doctl k8s options versions'
       }
