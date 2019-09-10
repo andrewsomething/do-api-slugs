@@ -2,7 +2,11 @@
 node_modules
 /dist
 
+# Now.sh cache
+.now/cache/
+
 # local env files
+.env
 .env.local
 .env.*.local
 
