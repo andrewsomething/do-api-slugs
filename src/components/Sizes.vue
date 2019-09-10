@@ -82,6 +82,10 @@ export default {
         return 'CPU Optimized'
       } else if (value.startsWith('g-') || value.startsWith('gd-')) {
         return 'General Purpose'
+      } else if (value.startsWith('m') && value.includes('vcpu')) {
+        return 'Memory Optimized'
+      } else if (value.startsWith('m') && !value.includes('vcpu')) {
+        return 'Legacy High Memory'
       } else {
         return 'Legacy'
       }
