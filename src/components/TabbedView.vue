@@ -13,6 +13,10 @@
               <AppImages />
           </b-tab-item>
 
+          <b-tab-item label="Regions">
+              <Regions />
+          </b-tab-item>
+
           <b-tab-item label="Kubernetes Versions">
               <Kubernetes />
           </b-tab-item>
@@ -24,6 +28,7 @@
 import Sizes from './Sizes.vue'
 import DistroImages from './DistroImages.vue'
 import AppImages from './AppImages.vue'
+import Regions from './Regions.vue'
 import Kubernetes from './Kubernetes.vue'
 
 export default {
@@ -36,6 +41,7 @@ export default {
     Sizes,
     DistroImages,
     AppImages,
+    Regions,
     Kubernetes
   },
   methods: {
@@ -47,6 +53,8 @@ export default {
       } else if (tab === 2) {
         this.$root.$emit('tab', 'app-images')
       } else if (tab === 3) {
+        this.$root.$emit('tab', 'regions')
+      } else if (tab === 4) {
         this.$root.$emit('tab', 'k8s')
       }
     }
