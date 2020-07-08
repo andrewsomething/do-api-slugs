@@ -62,6 +62,8 @@ export default {
         this.doctl = 'doctl compute image list-application'
       } else if (data === 'k8s') {
         this.doctl = 'doctl k8s options versions'
+      }else if (data === 'regions') {
+        this.doctl = 'doctl compute region list'
       }
     })
   }
