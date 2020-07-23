@@ -23,4 +23,4 @@ services:
   http_port: 3000
   routes:
   - path: /api
-  run_command: bin/do-api-slugs
+  run_command: bin/api
