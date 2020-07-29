@@ -77,7 +77,7 @@ export default {
     },
     slugToClass: function (value) {
       if (value.startsWith('s-')) {
-        return 'Standard'
+        return 'Basic'
       } else if (value.startsWith('c-')) {
         return 'CPU Optimized'
       } else if (value.startsWith('g-') || value.startsWith('gd-')) {
