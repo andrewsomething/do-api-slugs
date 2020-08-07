@@ -34,7 +34,16 @@ type sizesResponse struct {
 	RetrievedAt string      `json:"retrieved_at"`
 }
 
+const (
+	defaultPort = "3000"
+)
+
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
+
 	mux := http.NewServeMux()
 
 	ih := http.HandlerFunc(imageHandler)
@@ -50,7 +59,8 @@ func main() {
 	sh := http.HandlerFunc(sizesHandler)
 	mux.HandleFunc("/sizes", sh)
 
-	log.Fatal(http.ListenAndServe(":3000", mux))
+	log.Printf("Listening on :%s", port)
+	log.Fatal(http.ListenAndServe(":"+port, mux))
 }
 
 func imageHandler(w http.ResponseWriter, r *http.Request) {
