@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,6 +11,10 @@ import (
 	"time"
 
 	"github.com/digitalocean/godo"
+)
+
+const (
+	defaultPort = "3000"
 )
 
 type imageResponse struct {
@@ -34,38 +37,46 @@ type sizesResponse struct {
 	RetrievedAt string      `json:"retrieved_at"`
 }
 
-const (
-	defaultPort = "3000"
-)
+type handler struct {
+	client *godo.Client
+}
 
 func main() {
+	token := os.Getenv("DO_TOKEN")
+	if token == "" {
+		log.Fatal("DigitalOcean API token not configured")
+	}
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
 	mux := http.NewServeMux()
+	handler := &handler{
+		client: godo.NewFromToken(token),
+	}
 
-	ih := http.HandlerFunc(imageHandler)
-	mux.Handle("/images/apps", ih)
-	mux.Handle("/images/distros", ih)
+	imagesHandler := http.HandlerFunc(handler.images)
+	mux.Handle("/images/apps", imagesHandler)
+	mux.Handle("/images/distros", imagesHandler)
 
-	rh := http.HandlerFunc(regionsHandler)
-	mux.Handle("/regions", rh)
+	regionsHandler := http.HandlerFunc(handler.regions)
+	mux.Handle("/regions", regionsHandler)
 
-	k8sh := http.HandlerFunc(k8sHandler)
-	mux.HandleFunc("/k8s", k8sh)
+	k8sHandler := http.HandlerFunc(handler.k8s)
+	mux.HandleFunc("/k8s", k8sHandler)
 
-	sh := http.HandlerFunc(sizesHandler)
-	mux.HandleFunc("/sizes", sh)
+	sizeHandler := http.HandlerFunc(handler.sizes)
+	mux.HandleFunc("/sizes", sizeHandler)
 
 	log.Printf("Listening on :%s", port)
 	log.Fatal(http.ListenAndServe(":"+port, mux))
 }
 
-func imageHandler(w http.ResponseWriter, r *http.Request) {
+func (h *handler) images(w http.ResponseWriter, r *http.Request) {
 	imageType := path.Base(r.URL.Path)
-	images, err := getImages(imageType)
+	images, err := getImages(h.client, imageType)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		fmt.Print(w)
@@ -77,21 +88,12 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	fmt.Fprintf(w, string(jsonResp))
+	json.NewEncoder(w).Encode(resp)
 }
 
-func getImages(imageType string) ([]godo.Image, error) {
-	client, err := getClient()
-	if err != nil {
-		return nil, err
-	}
+func getImages(client *godo.Client, imageType string) ([]godo.Image, error) {
 	ctx := context.TODO()
 	list := []godo.Image{}
 	opt := &godo.ListOptions{PerPage: 200}
@@ -126,8 +128,8 @@ func getImages(imageType string) ([]godo.Image, error) {
 	return list, nil
 }
 
-func k8sHandler(w http.ResponseWriter, r *http.Request) {
-	options, err := getOptions()
+func (h *handler) k8s(w http.ResponseWriter, r *http.Request) {
+	options, err := getOptions(h.client)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		fmt.Print(w)
@@ -139,30 +141,23 @@ func k8sHandler(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	fmt.Fprintf(w, string(jsonResp))
+	json.NewEncoder(w).Encode(resp)
 }
 
-func getOptions() (*godo.KubernetesOptions, error) {
-	client, err := getClient()
+func getOptions(client *godo.Client) (*godo.KubernetesOptions, error) {
+	ctx := context.TODO()
+	options, _, err := client.Kubernetes.GetOptions(ctx)
 	if err != nil {
 		return nil, err
 	}
-	ctx := context.TODO()
-
-	options, _, err := client.Kubernetes.GetOptions(ctx)
 
 	return options, nil
 }
 
-func regionsHandler(w http.ResponseWriter, r *http.Request) {
-	regions, err := getRegions()
+func (h *handler) regions(w http.ResponseWriter, r *http.Request) {
+	regions, err := getRegions(h.client)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		fmt.Print(w)
@@ -174,21 +169,12 @@ func regionsHandler(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	fmt.Fprintf(w, string(jsonResp))
+	json.NewEncoder(w).Encode(resp)
 }
 
-func getRegions() ([]godo.Region, error) {
-	client, err := getClient()
-	if err != nil {
-		return nil, err
-	}
+func getRegions(client *godo.Client) ([]godo.Region, error) {
 	ctx := context.TODO()
 	list := []godo.Region{}
 	opt := &godo.ListOptions{PerPage: 200}
@@ -213,8 +199,8 @@ func getRegions() ([]godo.Region, error) {
 	return list, nil
 }
 
-func sizesHandler(w http.ResponseWriter, r *http.Request) {
-	sizes, err := getSizes()
+func (h *handler) sizes(w http.ResponseWriter, r *http.Request) {
+	sizes, err := getSizes(h.client)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		fmt.Print(w)
@@ -226,21 +212,12 @@ func sizesHandler(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	fmt.Fprintf(w, string(jsonResp))
+	json.NewEncoder(w).Encode(resp)
 }
 
-func getSizes() ([]godo.Size, error) {
-	client, err := getClient()
-	if err != nil {
-		return nil, err
-	}
+func getSizes(client *godo.Client) ([]godo.Size, error) {
 	ctx := context.TODO()
 	list := []godo.Size{}
 	opt := &godo.ListOptions{PerPage: 200}
@@ -263,15 +240,4 @@ func getSizes() ([]godo.Size, error) {
 	}
 
 	return list, nil
-}
-
-func getClient() (*godo.Client, error) {
-	token := os.Getenv("DO_TOKEN")
-	if token == "" {
-		return nil, errors.New("DigitalOcean API token not configured")
-	}
-
-	client := godo.NewFromToken(token)
-
-	return client, nil
 }
