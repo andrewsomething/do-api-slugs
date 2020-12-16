@@ -1,4 +1,4 @@
-# github.com/digitalocean/godo v1.42.0
+# github.com/digitalocean/godo v1.54.0
 ## explicit
 github.com/digitalocean/godo
 # github.com/golang/protobuf v1.3.5
