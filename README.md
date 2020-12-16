@@ -14,3 +14,11 @@ The frontend is provided by a Vue.js powered static site. The backend Go service
 A Docker Compose file is provide for local development. To build and run both components, use:
 
     docker-compose up --build
+
+### Deploy to DigitalOcean
+
+In production, this site is host on DigitalOcean's App Platform. You can deploy it yourself using:
+
+[![Deploy to DO](https://mp-assets1.sfo2.digitaloceanspaces.com/deploy-to-do/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/andrewsomething/do-api-slugs/tree/main)
+
+Find the app spec in [.do/deploy.template.yaml](.do/deploy.template.yaml).
