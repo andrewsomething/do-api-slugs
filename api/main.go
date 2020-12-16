@@ -74,6 +74,12 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, mux))
 }
 
+func writeJSONResponse(w http.ResponseWriter, v interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
+	json.NewEncoder(w).Encode(v)
+}
+
 func (h *handler) images(w http.ResponseWriter, r *http.Request) {
 	imageType := path.Base(r.URL.Path)
 	images, err := getImages(h.client, imageType)
@@ -88,9 +94,7 @@ func (h *handler) images(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	json.NewEncoder(w).Encode(resp)
+	writeJSONResponse(w, resp)
 }
 
 func getImages(client *godo.Client, imageType string) ([]godo.Image, error) {
@@ -141,9 +145,7 @@ func (h *handler) k8s(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	json.NewEncoder(w).Encode(resp)
+	writeJSONResponse(w, resp)
 }
 
 func getOptions(client *godo.Client) (*godo.KubernetesOptions, error) {
@@ -169,9 +171,7 @@ func (h *handler) regions(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	json.NewEncoder(w).Encode(resp)
+	writeJSONResponse(w, resp)
 }
 
 func getRegions(client *godo.Client) ([]godo.Region, error) {
@@ -212,9 +212,7 @@ func (h *handler) sizes(w http.ResponseWriter, r *http.Request) {
 		RetrievedAt: timestamp,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "s-maxage=3600, maxage=0")
-	json.NewEncoder(w).Encode(resp)
+	writeJSONResponse(w, resp)
 }
 
 func getSizes(client *godo.Client) ([]godo.Size, error) {
