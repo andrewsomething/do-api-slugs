@@ -100,6 +100,7 @@ func (h *handler) images(w http.ResponseWriter, r *http.Request) {
 	imageType := path.Base(r.URL.Path)
 	images, err := getImages(h.client, imageType)
 	if err != nil {
+		log.Println(err.Error())
 		writeJSONError(w, http.StatusInternalServerError)
 		return
 	}
@@ -150,6 +151,7 @@ func getImages(client *godo.Client, imageType string) ([]godo.Image, error) {
 func (h *handler) k8s(w http.ResponseWriter, r *http.Request) {
 	options, err := getOptions(h.client)
 	if err != nil {
+		log.Println(err.Error())
 		writeJSONError(w, http.StatusInternalServerError)
 		return
 	}
@@ -175,6 +177,7 @@ func getOptions(client *godo.Client) (*godo.KubernetesOptions, error) {
 func (h *handler) regions(w http.ResponseWriter, r *http.Request) {
 	regions, err := getRegions(h.client)
 	if err != nil {
+		log.Println(err.Error())
 		writeJSONError(w, http.StatusInternalServerError)
 		return
 	}
@@ -215,6 +218,7 @@ func getRegions(client *godo.Client) ([]godo.Region, error) {
 func (h *handler) sizes(w http.ResponseWriter, r *http.Request) {
 	sizes, err := getSizes(h.client)
 	if err != nil {
+		log.Println(err.Error())
 		writeJSONError(w, http.StatusInternalServerError)
 		return
 	}
