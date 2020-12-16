@@ -1,0 +1,18 @@
+# Build
+FROM golang:1.15-alpine AS build
+
+WORKDIR /build
+RUN mkdir -p /out
+
+ADD ./api/ /build
+
+RUN go build -o /out/api ./...
+
+# Serve
+FROM alpine:3.12
+
+WORKDIR /app
+COPY --from=build /out/api /app/api
+
+EXPOSE 3000
+ENTRYPOINT ["/app/api"]

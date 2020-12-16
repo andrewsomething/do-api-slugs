@@ -1,0 +1,26 @@
+name: do-api-slugs
+region: ams3
+static_sites:
+- build_command: npm run build
+  environment_slug: node-js
+  github:
+    branch: app-platform
+    deploy_on_push: true
+    repo: andrewsomething/do-api-slugs
+  name: web
+  routes:
+  - path: /
+services:
+- environment_slug: go
+  github:
+    branch: app-platform
+    deploy_on_push: true
+    repo: andrewsomething/do-api-slugs
+  instance_count: 1
+  instance_size_slug: professional-xs
+  name: api
+  source_dir: api/
+  http_port: 3000
+  routes:
+  - path: /api
+  run_command: bin/api

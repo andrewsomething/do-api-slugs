@@ -7,19 +7,10 @@
 
 ## Project Details
 
-The frontend is provided by a Vue.js powered static site. The backend is made up of serverless functions found in the `functions/` directory. These proxy the DigitalOcean API so that an API token is not required on the frontend and set a `Cache-Control` header so the responses are appropriately cached by the CDN.
+The frontend is provided by a Vue.js powered static site. The backend Go service found in the `api/` directory. It proxies the DigitalOcean API so that an API token is not required on the frontend and set a `Cache-Control` header so the responses are appropriately cached by the CDN.
 
-#### Install frontend dependencies
-```
-npm install
-```
+### Local Development
 
-#### Run development server
-```
-npm run serve
-```
+A Docker Compose file is provide for local development. To build and run both components, use:
 
-#### Build for production
-```
-npm run build
-```
+    docker-compose up --build
