@@ -1,30 +1,29 @@
-name: production-do-api-slugs
-region: ams3
-static_sites:
-- build_command: npm run build
-  environment_slug: node-js
-  github:
-    branch: deploy-to-do
-    deploy_on_push: true
-    repo: andrewsomething/do-api-slugs
-  name: web
-  routes:
-  - path: /
-services:
-- environment_slug: go
-  github:
-    branch: deploy-to-do
-    deploy_on_push: true
-    repo: andrewsomething/do-api-slugs
-  envs:
-  - key: DO_TOKEN
-    value: "READ_ONLY_DIGITALOCEAN_API_TOKEN"
-    type: SECRET
-  instance_count: 1
-  instance_size_slug: professional-xs
-  name: api
-  source_dir: api/
-  http_port: 3000
-  routes:
-  - path: /api
-  run_command: bin/api
+spec:
+  name: do-api-slugs
+  region: ams3
+  static_sites:
+  - name: web
+    build_command: npm run build
+    github:
+      branch: deploy-to-do
+      deploy_on_push: true
+      repo: andrewsomething/do-api-slugs
+    routes:
+    - path: /
+  services:
+  - name: api
+    github:
+      branch: deploy-to-do
+      deploy_on_push: true
+      repo: andrewsomething/do-api-slugs
+    envs:
+    - key: DO_TOKEN
+      value: "READ_ONLY_DIGITALOCEAN_API_TOKEN"
+      type: SECRET
+    instance_count: 1
+    instance_size_slug: professional-xs
+    source_dir: api/
+    http_port: 3000
+    routes:
+    - path: /api
+    run_command: bin/api
