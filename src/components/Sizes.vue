@@ -4,8 +4,8 @@
            :loading="isLoading"
            default-sort="price_monthly">
     <template slot-scope="props">
-      <b-table-column field="slug" label="Class" sortable>
-          {{ props.row.slug | slugToClass }}
+      <b-table-column field="description" label="Class" sortable>
+          {{ props.row.description }}
       </b-table-column>
 
       <b-table-column field="slug" label="Slug" sortable>
@@ -74,23 +74,6 @@ export default {
   filters: {
     mbToGb: function (value) {
       return value / 1024
-    },
-    slugToClass: function (value) {
-      if (value.startsWith('s-')) {
-        return 'Basic'
-      } else if (value.startsWith('c-') || value.startsWith('c2-')) {
-        return 'CPU Optimized'
-      } else if (value.startsWith('g-') || value.startsWith('gd-')) {
-        return 'General Purpose'
-      } else if (value.startsWith('m') && value.includes('vcpu')) {
-        return 'Memory Optimized'
-      } else if (value.startsWith('m') && !value.includes('vcpu')) {
-        return 'Legacy High Memory'
-      } else if (value.startsWith('so')) {
-        return 'Storage Optimized'
-      } else {
-        return 'Legacy'
-      }
     }
   },
   created () {
