@@ -61,7 +61,7 @@ export default {
         this.isEmpty = true
         this.errored = true
       })
-      .finally(() => this.isLoading = false)
+      .finally(() => { this.isLoading = false })
   }
 }
 </script>
