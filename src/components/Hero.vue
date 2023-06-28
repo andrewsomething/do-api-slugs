@@ -6,7 +6,7 @@
           <div id="navbarMenuHeroA" class="navbar-menu">
             <div class="navbar-end">
               <span class="navbar-item">
-                <a class="button is-primary is-inverted" href="https://developers.digitalocean.com/documentation/v2/">
+                <a class="button is-primary is-inverted" href="https://docs.digitalocean.com/reference/api/api-reference/">
                   <span class="icon">
                     <i class="fab fa-digital-ocean"></i>
                   </span>
