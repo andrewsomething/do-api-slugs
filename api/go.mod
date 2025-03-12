@@ -2,8 +2,6 @@ module github.com/andrewsomething/do-api-slugs/api
 
 go 1.22
 
-toolchain go1.24.0
-
 require github.com/digitalocean/godo v1.138.0
 
 require (
