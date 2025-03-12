@@ -36,6 +36,11 @@ type sizesResponse struct {
 	RetrievedAt string      `json:"retrieved_at"`
 }
 
+type databaseOptionsResponse struct {
+	Options     map[string]interface{} `json:"options"`
+	RetrievedAt string                 `json:"retrieved_at"`
+}
+
 type handler struct {
 	client *godo.Client
 }
@@ -71,6 +76,9 @@ func main() {
 
 	sizeHandler := http.HandlerFunc(handler.sizes)
 	mux.HandleFunc("/sizes", sizeHandler)
+
+	dbOptionsHandler := http.HandlerFunc(handler.databaseOptions)
+	mux.HandleFunc("/databases/options", dbOptionsHandler)
 
 	log.Printf("Listening on :%s", port)
 	log.Fatal(http.ListenAndServe(":"+port, mux))
@@ -254,4 +262,47 @@ func getSizes(client *godo.Client) ([]godo.Size, error) {
 	}
 
 	return list, nil
+}
+
+func (h *handler) databaseOptions(w http.ResponseWriter, r *http.Request) {
+	options, err := getDatabaseOptions(h.client)
+	if err != nil {
+		log.Println(err.Error())
+		writeJSONError(w, http.StatusInternalServerError)
+		return
+	}
+	timestamp := time.Now().Format("Mon Jan _2 15:04:05 2006 UTC")
+	resp := databaseOptionsResponse{
+		Options:     options,
+		RetrievedAt: timestamp,
+	}
+
+	writeJSONResponse(w, resp)
+}
+
+func getDatabaseOptions(client *godo.Client) (map[string]interface{}, error) {
+	ctx := context.TODO()
+
+	// Call the DatabaseOptions endpoint
+	options, _, err := client.Databases.ListOptions(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert options to a map for flexibility
+	optionsMap := make(map[string]interface{})
+
+	// Convert from godo.DatabaseOptions to a map
+	optionsBytes, err := json.Marshal(options)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal into a generic map
+	err = json.Unmarshal(optionsBytes, &optionsMap)
+	if err != nil {
+		return nil, err
+	}
+
+	return optionsMap, nil
 }
