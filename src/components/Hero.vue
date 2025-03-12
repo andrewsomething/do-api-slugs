@@ -64,6 +64,10 @@ export default {
         this.doctl = 'doctl k8s options versions'
       } else if (data === 'regions') {
         this.doctl = 'doctl compute region list'
+      } else if (data === 'database-sizes') {
+        this.doctl = 'doctl databases options slugs'
+      } else if (data === 'database-versions') {
+        this.doctl = 'doctl databases options versions'
       }
     })
   }

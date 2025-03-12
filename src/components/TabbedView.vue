@@ -5,6 +5,10 @@
             <Sizes />
           </b-tab-item>
 
+          <b-tab-item label="Database Sizes">
+            <DatabaseSizes />
+          </b-tab-item>
+
           <b-tab-item label="Distro Images">
               <DistroImages />
           </b-tab-item>
@@ -17,6 +21,10 @@
               <Regions />
           </b-tab-item>
 
+          <b-tab-item label="Database Versions">
+              <DatabaseVersions />
+          </b-tab-item>
+
           <b-tab-item label="Kubernetes Versions">
               <Kubernetes />
           </b-tab-item>
@@ -26,10 +34,12 @@
 
 <script>
 import Sizes from './Sizes.vue'
+import DatabaseSizes from './DatabaseSizes.vue'
 import DistroImages from './DistroImages.vue'
 import AppImages from './AppImages.vue'
 import Regions from './Regions.vue'
 import Kubernetes from './Kubernetes.vue'
+import DatabaseVersions from './DatabaseVersions.vue'
 
 export default {
   data () {
@@ -39,22 +49,28 @@ export default {
   },
   components: {
     Sizes,
+    DatabaseSizes,
     DistroImages,
     AppImages,
     Regions,
-    Kubernetes
+    Kubernetes,
+    DatabaseVersions
   },
   methods: {
     onChange: function (tab) {
       if (tab === 0) {
         this.$root.$emit('tab', 'sizes')
       } else if (tab === 1) {
-        this.$root.$emit('tab', 'distro-images')
+        this.$root.$emit('tab', 'database-sizes')
       } else if (tab === 2) {
-        this.$root.$emit('tab', 'app-images')
+        this.$root.$emit('tab', 'distro-images')
       } else if (tab === 3) {
-        this.$root.$emit('tab', 'regions')
+        this.$root.$emit('tab', 'app-images')
       } else if (tab === 4) {
+        this.$root.$emit('tab', 'regions')
+      } else if (tab === 5) {
+        this.$root.$emit('tab', 'database-versions')
+      } else if (tab === 6) {
         this.$root.$emit('tab', 'k8s')
       }
     }
