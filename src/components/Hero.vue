@@ -56,6 +56,8 @@ export default {
     this.$root.$on('tab', data => {
       if (data === 'sizes') {
         this.doctl = 'doctl compute size list'
+      } else if (data === 'gpu-sizes') {
+        this.doctl = 'doctl compute size list'
       } else if (data === 'distro-images') {
         this.doctl = 'doctl compute image list-distribution'
       } else if (data === 'app-images') {
@@ -64,6 +66,10 @@ export default {
         this.doctl = 'doctl k8s options versions'
       } else if (data === 'regions') {
         this.doctl = 'doctl compute region list'
+      } else if (data === 'database-sizes') {
+        this.doctl = 'doctl databases options slugs'
+      } else if (data === 'database-versions') {
+        this.doctl = 'doctl databases options versions'
       }
     })
   }
