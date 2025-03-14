@@ -9,10 +9,6 @@
             <GpuSizes />
           </b-tab-item>
 
-          <b-tab-item label="Database Sizes">
-            <DatabaseSizes />
-          </b-tab-item>
-
           <b-tab-item label="Distro Images">
               <DistroImages />
           </b-tab-item>
@@ -23,6 +19,10 @@
 
           <b-tab-item label="Regions">
               <Regions />
+          </b-tab-item>
+
+          <b-tab-item label="Database Sizes">
+            <DatabaseSizes />
           </b-tab-item>
 
           <b-tab-item label="Database Versions">
@@ -69,13 +69,13 @@ export default {
       } else if (tab === 1) {
         this.$root.$emit('tab', 'gpu-sizes')
       } else if (tab === 2) {
-        this.$root.$emit('tab', 'database-sizes')
-      } else if (tab === 3) {
         this.$root.$emit('tab', 'distro-images')
-      } else if (tab === 4) {
+      } else if (tab === 3) {
         this.$root.$emit('tab', 'app-images')
-      } else if (tab === 5) {
+      } else if (tab === 4) {
         this.$root.$emit('tab', 'regions')
+      } else if (tab === 5) {
+        this.$root.$emit('tab', 'database-sizes')
       } else if (tab === 6) {
         this.$root.$emit('tab', 'database-versions')
       } else if (tab === 7) {
