@@ -1,65 +1,67 @@
 <template>
-  <div>
-    <div class="level mb-4">
-      <div class="level-left">
-        <div class="level-item">
-          <div style="width: 200px;">
-            <label class="label">Filter by Class</label>
-            <b-select v-model="selectedClass" placeholder="All Classes" expanded>
-              <option value="">All Classes</option>
-              <option v-for="classType in classTypes" :key="classType" :value="classType">
-                {{ classType }}
-              </option>
-            </b-select>
+  <section class="container">
+    <div>
+      <div class="level mb-4">
+        <div class="level-left">
+          <div class="level-item">
+            <div style="width: 200px;">
+              <label class="label">Filter by Class</label>
+              <b-select v-model="selectedClass" placeholder="All Classes" expanded>
+                <option value="">All Classes</option>
+                <option v-for="classType in classTypes" :key="classType" :value="classType">
+                  {{ classType }}
+                </option>
+              </b-select>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <b-table :data="filteredSizes"
-             striped
-             :loading="isLoading"
-             default-sort="slug">
-      <template slot-scope="props">
-        <b-table-column field="description" label="Class" sortable>
-            {{ props.row.description }}
-        </b-table-column>
+      <b-table :data="filteredSizes"
+               striped
+               :loading="isLoading"
+               default-sort="slug">
+        <template slot-scope="props">
+          <b-table-column field="description" label="Class" sortable>
+              {{ props.row.description }}
+          </b-table-column>
 
-        <b-table-column field="slug" label="Slug" sortable>
-          <code>{{ props.row.slug }}</code>
-        </b-table-column>
+          <b-table-column field="slug" label="Slug" sortable>
+            <code>{{ props.row.slug }}</code>
+          </b-table-column>
 
-        <b-table-column field="engines" label="Engines" sortable>
-            {{ props.row.engines }}
-        </b-table-column>
+          <b-table-column field="engines" label="Engines" sortable>
+              {{ props.row.engines }}
+          </b-table-column>
 
-        <b-table-column field="nodes" label="Supported Node Count" sortable>
-            {{ props.row.nodes.join(', ') }}
-        </b-table-column>
-      </template>
-      <template slot="footer">
-        <div class="has-text-right" v-if="data.retrieved_at">
-            <span class="has-text-grey-light">Retrieved at: {{ data.retrieved_at }}</span>
-        </div>
-      </template>
-      <template slot="empty">
-        <section class="section is-medium">
-          <div class="content has-text-grey has-text-centered">
-            <div v-if="errored">
-              <p>
-                <b-icon
-                  pack="far"
-                  icon="frown"
-                  size="is-large">
-                </b-icon>
-              </p>
-              <p>Something went wrong here...</p>
-            </div>
+          <b-table-column field="nodes" label="Supported Node Count" sortable>
+              {{ props.row.nodes.join(', ') }}
+          </b-table-column>
+        </template>
+        <template slot="footer">
+          <div class="has-text-right" v-if="data.retrieved_at">
+              <span class="has-text-grey-light">Retrieved at: {{ data.retrieved_at }}</span>
           </div>
-        </section>
-      </template>
-    </b-table>
-  </div>
+        </template>
+        <template slot="empty">
+          <section class="section is-medium">
+            <div class="content has-text-grey has-text-centered">
+              <div v-if="errored">
+                <p>
+                  <b-icon
+                    pack="far"
+                    icon="frown"
+                    size="is-large">
+                  </b-icon>
+                </p>
+                <p>Something went wrong here...</p>
+              </div>
+            </div>
+          </section>
+        </template>
+      </b-table>
+    </div>
+  </section>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
-  <section class="container">
-      <b-tabs v-model="activeTab" size="is-medium" @change="onChange">
+  <section class="container is-fluid">
+      <b-tabs v-model="activeTab" size="is-medium" position="is-centered" @change="onChange">
           <b-tab-item label="Droplet Sizes">
             <Sizes />
           </b-tab-item>
