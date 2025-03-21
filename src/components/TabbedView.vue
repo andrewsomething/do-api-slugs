@@ -1,38 +1,42 @@
 <template>
   <section class="container is-fluid">
-      <b-tabs v-model="activeTab" size="is-medium" position="is-centered" @change="onChange">
-          <b-tab-item label="Droplet Sizes">
-            <Sizes />
-          </b-tab-item>
+    <b-tabs v-model="activeTab" size="is-medium" position="is-centered" @change="onChange">
+      <b-tab-item label="Droplet Sizes">
+        <Sizes />
+      </b-tab-item>
 
-          <b-tab-item label="GPU Droplet Sizes">
-            <GpuSizes />
-          </b-tab-item>
+      <b-tab-item label="GPU Droplet Sizes">
+        <GpuSizes />
+      </b-tab-item>
 
-          <b-tab-item label="Distro Images">
-              <DistroImages />
-          </b-tab-item>
+      <b-tab-item label="Distro Images">
+        <DistroImages />
+      </b-tab-item>
 
-          <b-tab-item label="App Images">
-              <AppImages />
-          </b-tab-item>
+      <b-tab-item label="App Images">
+        <AppImages />
+      </b-tab-item>
 
-          <b-tab-item label="Regions">
-              <Regions />
-          </b-tab-item>
+      <b-tab-item label="Regions">
+        <Regions />
+      </b-tab-item>
 
-          <b-tab-item label="Database Sizes">
-            <DatabaseSizes />
-          </b-tab-item>
+      <b-tab-item label="Database Sizes">
+        <DatabaseSizes />
+      </b-tab-item>
 
-          <b-tab-item label="Database Versions">
-              <DatabaseVersions />
-          </b-tab-item>
+      <b-tab-item label="Database Versions">
+        <DatabaseVersions />
+      </b-tab-item>
 
-          <b-tab-item label="Kubernetes Versions">
-              <Kubernetes />
-          </b-tab-item>
-      </b-tabs>
+      <b-tab-item label="Kubernetes Versions">
+        <Kubernetes />
+      </b-tab-item>
+
+      <b-tab-item label="App Instance Sizes">
+        <AppSizes />
+      </b-tab-item>
+    </b-tabs>
   </section>
 </template>
 
@@ -45,6 +49,7 @@ import AppImages from './AppImages.vue'
 import Regions from './Regions.vue'
 import Kubernetes from './Kubernetes.vue'
 import DatabaseVersions from './DatabaseVersions.vue'
+import AppSizes from './AppSizes.vue'
 
 export default {
   data () {
@@ -60,7 +65,8 @@ export default {
     AppImages,
     Regions,
     Kubernetes,
-    DatabaseVersions
+    DatabaseVersions,
+    AppSizes
   },
   methods: {
     onChange: function (tab) {
@@ -80,6 +86,8 @@ export default {
         this.$root.$emit('tab', 'database-versions')
       } else if (tab === 7) {
         this.$root.$emit('tab', 'k8s')
+      } else if (tab === 8) {
+        this.$root.$emit('tab', 'app-sizes')
       }
     }
   }

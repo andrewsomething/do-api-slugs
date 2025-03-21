@@ -41,6 +41,11 @@ type databaseOptionsResponse struct {
 	RetrievedAt string                 `json:"retrieved_at"`
 }
 
+type appsSizesResponse struct {
+	InstanceSizes []*godo.AppInstanceSize `json:"instance_sizes"`
+	RetrievedAt   string                  `json:"retrieved_at"`
+}
+
 type handler struct {
 	client *godo.Client
 }
@@ -79,6 +84,9 @@ func main() {
 
 	dbOptionsHandler := http.HandlerFunc(handler.databaseOptions)
 	mux.HandleFunc("/databases/options", dbOptionsHandler)
+
+	appSizesHandler := http.HandlerFunc(handler.appsSizes)
+	mux.HandleFunc("/apps/sizes", appSizesHandler)
 
 	log.Printf("Listening on :%s", port)
 	log.Fatal(http.ListenAndServe(":"+port, mux))
@@ -305,4 +313,31 @@ func getDatabaseOptions(client *godo.Client) (map[string]interface{}, error) {
 	}
 
 	return optionsMap, nil
+}
+
+func (h *handler) appsSizes(w http.ResponseWriter, r *http.Request) {
+	sizes, err := getAppsSizes(h.client)
+	if err != nil {
+		log.Println(err.Error())
+		writeJSONError(w, http.StatusInternalServerError)
+		return
+	}
+
+	resp := appsSizesResponse{
+		InstanceSizes: sizes,
+		RetrievedAt:   time.Now().Format("Mon Jan _2 15:04:05 2006 UTC"),
+	}
+
+	writeJSONResponse(w, resp)
+}
+
+func getAppsSizes(client *godo.Client) ([]*godo.AppInstanceSize, error) {
+	ctx := context.TODO()
+
+	options, _, err := client.Apps.ListInstanceSizes(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return options, nil
 }

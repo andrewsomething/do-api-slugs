@@ -6,7 +6,8 @@
           <div id="navbarMenuHeroA" class="navbar-menu">
             <div class="navbar-end">
               <span class="navbar-item">
-                <a class="button is-primary is-inverted" href="https://docs.digitalocean.com/reference/api/api-reference/">
+                <a class="button is-primary is-inverted"
+                  href="https://docs.digitalocean.com/reference/api/api-reference/">
                   <span class="icon">
                     <i class="fab fa-digital-ocean"></i>
                   </span>
@@ -70,6 +71,8 @@ export default {
         this.doctl = 'doctl databases options slugs'
       } else if (data === 'database-versions') {
         this.doctl = 'doctl databases options versions'
+      } else if (data === 'app-sizes') {
+        this.doctl = 'doctl apps tier instance-size list'
       }
     })
   }

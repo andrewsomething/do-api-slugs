@@ -17,13 +17,10 @@
         </div>
       </div>
 
-      <b-table :data="filteredSizes"
-               striped
-               :loading="isLoading"
-               default-sort="price_monthly">
+      <b-table :data="filteredSizes" striped :loading="isLoading" default-sort="price_monthly">
         <template slot-scope="props">
           <b-table-column field="description" label="Class" sortable>
-              {{ props.row.description }}
+            {{ props.row.description }}
           </b-table-column>
 
           <b-table-column field="slug" label="Slug" sortable>
@@ -31,32 +28,32 @@
           </b-table-column>
 
           <b-table-column field="memory" label="RAM" sortable>
-              {{ props.row.memory | mbToGb }} GB
+            {{ props.row.memory | mbToGb }} GB
           </b-table-column>
 
           <b-table-column field="vcpus" label="CPU" sortable>
-              {{ props.row.vcpus }}
+            {{ props.row.vcpus }}
           </b-table-column>
 
           <b-table-column field="disk" label="Disk" sortable>
-              {{ props.row.disk }} GB
+            {{ props.row.disk }} GB
           </b-table-column>
 
           <b-table-column field="transfer" label="Transfer" sortable>
-              {{ props.row.transfer }} TB
+            {{ props.row.transfer }} TB
           </b-table-column>
 
-          <b-table-column field="price_monthly" label="Price Monthly" sortable>
-              ${{ props.row.price_monthly }}
+          <b-table-column field="price_monthly" label="Price Monthly" sortable :custom-sort="sortNumeric">
+            ${{ props.row.price_monthly }}
           </b-table-column>
 
-          <b-table-column field="price_hourly" label="Price Hourly" sortable>
-              ${{ props.row.price_hourly }}
+          <b-table-column field="price_hourly" label="Price Hourly" sortable :custom-sort="sortNumeric">
+            ${{ props.row.price_hourly }}
           </b-table-column>
         </template>
         <template slot="footer">
           <div class="has-text-right" v-if="data.retrieved_at">
-              <span class="has-text-grey-light">Retrieved at: {{ data.retrieved_at }}</span>
+            <span class="has-text-grey-light">Retrieved at: {{ data.retrieved_at }}</span>
           </div>
         </template>
         <template slot="empty">
@@ -64,10 +61,7 @@
             <div class="content has-text-grey has-text-centered">
               <div v-if="errored">
                 <p>
-                  <b-icon
-                    pack="far"
-                    icon="frown"
-                    size="is-large">
+                  <b-icon pack="far" icon="frown" size="is-large">
                   </b-icon>
                 </p>
                 <p>Something went wrong here...</p>
@@ -120,6 +114,13 @@ export default {
   filters: {
     mbToGb: function (value) {
       return value / 1024
+    }
+  },
+  methods: {
+    sortNumeric (a, b) {
+      const numA = parseFloat(a.replace('$', ''))
+      const numB = parseFloat(b.replace('$', ''))
+      return numA - numB
     }
   },
   created () {
