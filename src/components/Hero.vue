@@ -58,6 +58,8 @@ export default {
         this.doctl = 'doctl compute size list'
       } else if (data === 'gpu-sizes') {
         this.doctl = 'doctl compute size list'
+      } else if (data === 'app-platform-sizes') {
+        this.doctl = 'doctl app tier instance-size list'
       } else if (data === 'distro-images') {
         this.doctl = 'doctl compute image list-distribution'
       } else if (data === 'app-images') {
