@@ -9,7 +9,7 @@
               <b-select v-model="selectedTier" placeholder="All Tiers" expanded>
                 <option value="">All Tiers</option>
                 <option v-for="tier in tierTypes" :key="tier" :value="tier">
-                  {{ tier }}
+                  {{ formatTier(tier) }}
                 </option>
               </b-select>
             </div>
@@ -20,7 +20,7 @@
               <b-select v-model="selectedCpuType" placeholder="All CPU Types" expanded>
                 <option value="">All CPU Types</option>
                 <option v-for="cpuType in cpuTypes" :key="cpuType" :value="cpuType">
-                  {{ cpuType }}
+                  {{ formatCpuType(cpuType) }}
                 </option>
               </b-select>
             </div>
@@ -46,11 +46,11 @@
           </b-table-column>
 
           <b-table-column field="tier_slug" label="Tier" sortable>
-              {{ props.row.tier_slug }}
+              {{ formatTier(props.row.tier_slug) }}
           </b-table-column>
 
           <b-table-column field="cpu_type" label="CPU Type" sortable>
-              {{ props.row.cpu_type }}
+              {{ formatCpuType(props.row.cpu_type) }}
           </b-table-column>
 
           <b-table-column field="cpus" label="CPUs" sortable>
@@ -173,6 +173,16 @@ export default {
     sortNumber (a, b, key) {
       // Convert string values to numbers for proper sorting
       return parseFloat(a[key]) - parseFloat(b[key])
+    },
+    formatCpuType (cpuType) {
+      if (!cpuType) return ''
+      // Convert uppercase like "SHARED" to "Shared"
+      return cpuType.charAt(0).toUpperCase() + cpuType.slice(1).toLowerCase()
+    },
+    formatTier (tier) {
+      if (!tier) return ''
+      // Convert lowercase like "basic" to "Basic"
+      return tier.charAt(0).toUpperCase() + tier.slice(1)
     }
   },
   created () {
