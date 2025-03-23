@@ -36,6 +36,11 @@ type sizesResponse struct {
 	RetrievedAt string      `json:"retrieved_at"`
 }
 
+type appInstanceSizesResponse struct {
+	Sizes       []godo.AppInstanceSize `json:"sizes"`
+	RetrievedAt string                 `json:"retrieved_at"`
+}
+
 type databaseOptionsResponse struct {
 	Options     map[string]interface{} `json:"options"`
 	RetrievedAt string                 `json:"retrieved_at"`
@@ -76,6 +81,9 @@ func main() {
 
 	sizeHandler := http.HandlerFunc(handler.sizes)
 	mux.HandleFunc("/sizes", sizeHandler)
+
+	appInstanceSizeHandler := http.HandlerFunc(handler.appInstanceSizes)
+	mux.HandleFunc("/apps/tiers/instance_sizes", appInstanceSizeHandler)
 
 	dbOptionsHandler := http.HandlerFunc(handler.databaseOptions)
 	mux.HandleFunc("/databases/options", dbOptionsHandler)
@@ -259,6 +267,39 @@ func getSizes(client *godo.Client) ([]godo.Size, error) {
 			return nil, err
 		}
 		opt.Page = page + 1
+	}
+
+	return list, nil
+}
+
+func (h *handler) appInstanceSizes(w http.ResponseWriter, r *http.Request) {
+	sizes, err := getAppInstanceSizes(h.client)
+	if err != nil {
+		log.Println(err.Error())
+		writeJSONError(w, http.StatusInternalServerError)
+		return
+	}
+	timestamp := time.Now().Format("Mon Jan _2 15:04:05 2006 UTC")
+	resp := appInstanceSizesResponse{
+		Sizes:       sizes,
+		RetrievedAt: timestamp,
+	}
+
+	writeJSONResponse(w, resp)
+}
+
+func getAppInstanceSizes(client *godo.Client) ([]godo.AppInstanceSize, error) {
+	ctx := context.TODO()
+	list := []godo.AppInstanceSize{}
+
+	// Get app instance sizes
+	sizes, _, err := client.Apps.ListInstanceSizes(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, s := range sizes {
+		list = append(list, *s)
 	}
 
 	return list, nil
