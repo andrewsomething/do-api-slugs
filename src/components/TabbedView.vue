@@ -9,6 +9,10 @@
             <GpuSizes />
           </b-tab-item>
 
+          <b-tab-item label="App Platform Sizes">
+              <AppPlatformSizes />
+          </b-tab-item>
+
           <b-tab-item label="Distro Images">
               <DistroImages />
           </b-tab-item>
@@ -42,6 +46,7 @@ import GpuSizes from './GpuSizes.vue'
 import DatabaseSizes from './DatabaseSizes.vue'
 import DistroImages from './DistroImages.vue'
 import AppImages from './AppImages.vue'
+import AppPlatformSizes from './AppPlatformSizes.vue'
 import Regions from './Regions.vue'
 import Kubernetes from './Kubernetes.vue'
 import DatabaseVersions from './DatabaseVersions.vue'
@@ -58,6 +63,7 @@ export default {
     DatabaseSizes,
     DistroImages,
     AppImages,
+    AppPlatformSizes,
     Regions,
     Kubernetes,
     DatabaseVersions
@@ -69,16 +75,18 @@ export default {
       } else if (tab === 1) {
         this.$root.$emit('tab', 'gpu-sizes')
       } else if (tab === 2) {
-        this.$root.$emit('tab', 'distro-images')
+        this.$root.$emit('tab', 'app-platform-sizes')
       } else if (tab === 3) {
-        this.$root.$emit('tab', 'app-images')
+        this.$root.$emit('tab', 'distro-images')
       } else if (tab === 4) {
-        this.$root.$emit('tab', 'regions')
+        this.$root.$emit('tab', 'app-images')
       } else if (tab === 5) {
-        this.$root.$emit('tab', 'database-sizes')
+        this.$root.$emit('tab', 'regions')
       } else if (tab === 6) {
-        this.$root.$emit('tab', 'database-versions')
+        this.$root.$emit('tab', 'database-sizes')
       } else if (tab === 7) {
+        this.$root.$emit('tab', 'database-versions')
+      } else if (tab === 8) {
         this.$root.$emit('tab', 'k8s')
       }
     }
