@@ -61,7 +61,7 @@ export default {
       return Object.entries(this.data.options).map(([engine, data]) => {
         return {
           engine: engine,
-          versions: data.versions.join(', ')
+          versions: data.versions ? data.versions.join(', ') : ''
         }
       })
     }

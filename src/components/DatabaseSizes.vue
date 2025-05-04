@@ -114,11 +114,11 @@ export default {
           const dbOptions = options[engine]
 
           // Process each layout (which contains supported node counts)
-          dbOptions.layouts.forEach(layout => {
+          dbOptions.layouts?.forEach(layout => {
             const nodeCount = layout.num_nodes
 
             // Process each size in this layout
-            layout.sizes.forEach(slug => {
+            layout.sizes?.forEach(slug => {
               // Check if this size is already in our list
               let sizeIndex = sizes.findIndex(s => s.slug === slug)
 
