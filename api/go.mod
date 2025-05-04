@@ -1,6 +1,6 @@
 module github.com/andrewsomething/do-api-slugs/api
 
-go 1.24.2
+go 1.24.0
 
 require github.com/digitalocean/godo v1.145.0
 
