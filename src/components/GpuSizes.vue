@@ -50,6 +50,10 @@
               {{ props.row.gpu_info ? props.row.gpu_info.count : '-' }}
           </b-table-column>
 
+          <b-table-column field="gpu_vram" label="VRAM" sortable>
+              {{ props.row.gpu_info && props.row.gpu_info.vram ? `${props.row.gpu_info.vram.amount} ${props.row.gpu_info.vram.unit.toUpperCase()}` : '-' }}
+          </b-table-column>
+
           <b-table-column field="gpu_model" label="GPU Type" sortable>
               {{ props.row.gpu_info ? props.row.gpu_info.model : '-' }}
           </b-table-column>
