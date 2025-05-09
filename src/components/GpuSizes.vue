@@ -31,7 +31,7 @@
           </b-table-column>
 
           <b-table-column field="memory" label="RAM" sortable>
-              {{ props.row.memory | mbToGb }} GB
+              {{ props.row.memory | mbToGb }} GiB
           </b-table-column>
 
           <b-table-column field="vcpus" label="CPU" sortable>
@@ -39,7 +39,7 @@
           </b-table-column>
 
           <b-table-column field="disk" label="Disk" sortable>
-              {{ props.row.disk }} GB
+              {{ props.row.disk }} GiB
           </b-table-column>
 
           <b-table-column field="scratch_disk" label="Scratch Disk" sortable>
@@ -50,12 +50,16 @@
               {{ props.row.gpu_info ? props.row.gpu_info.count : '-' }}
           </b-table-column>
 
+          <b-table-column field="gpu_vram" label="VRAM" sortable>
+              {{ props.row.gpu_info && props.row.gpu_info.vram ? `${props.row.gpu_info.vram.amount} ${formatVramUnit(props.row.gpu_info.vram.unit)}` : '-' }}
+          </b-table-column>
+
           <b-table-column field="gpu_model" label="GPU Type" sortable>
               {{ props.row.gpu_info ? props.row.gpu_info.model : '-' }}
           </b-table-column>
 
           <b-table-column field="transfer" label="Transfer" sortable>
-              {{ props.row.transfer }} TB
+              {{ props.row.transfer }} TiB
           </b-table-column>
 
           <b-table-column field="price_monthly" label="Price Monthly" sortable>
@@ -146,7 +150,39 @@ export default {
       const scratchDisk = row.disk_info.find(disk => disk.type === 'scratch')
       if (!scratchDisk || !scratchDisk.size) return '-'
 
-      return `${scratchDisk.size.amount} ${scratchDisk.size.unit.toUpperCase()}`
+      // Convert unit if needed
+      const unit = this.formatDiskUnit(scratchDisk.size.unit)
+      return `${scratchDisk.size.amount} ${unit}`
+    },
+    formatDiskUnit (unit) {
+      if (!unit) return ''
+      // Convert decimal units to binary units
+      const unitMap = {
+        'gb': 'GiB',
+        'mb': 'MiB',
+        'tb': 'TiB',
+        'kb': 'KiB',
+        'gib': 'GiB',
+        'mib': 'MiB',
+        'tib': 'TiB',
+        'kib': 'KiB'
+      }
+      return unitMap[unit.toLowerCase()] || unit.toUpperCase()
+    },
+    formatVramUnit (unit) {
+      if (!unit) return ''
+      // Convert decimal units to binary units
+      const unitMap = {
+        'gb': 'GiB',
+        'mb': 'MiB',
+        'tb': 'TiB',
+        'kb': 'KiB',
+        'gib': 'GiB',
+        'mib': 'MiB',
+        'tib': 'TiB',
+        'kib': 'KiB'
+      }
+      return unitMap[unit.toLowerCase()] || unit.toUpperCase()
     }
   },
   created () {
