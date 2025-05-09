@@ -58,7 +58,7 @@
           </b-table-column>
 
           <b-table-column field="memory_bytes" label="Memory" sortable>
-              {{ (props.row.memory_bytes / (1024 * 1024 * 1024)).toFixed(1) }} GB
+              {{ (props.row.memory_bytes / (1024 * 1024 * 1024)).toFixed(1) }} GiB
           </b-table-column>
 
           <b-table-column field="bandwidth_allowance_gib" label="Bandwidth" sortable>
